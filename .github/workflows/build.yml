@@ -75,8 +75,6 @@ jobs:
           poetry install
       - name: "Import package and get version"
         run: "poetry run python -c 'import emailee; print(emailee.__version__)'"
-        with:
-          fail_ci_if_error: true
 
 
   package:
@@ -97,5 +95,3 @@ jobs:
           poetry install --no-dev
       - name: "Build package"
         run: "poetry build"
-        with:
-          fail_ci_if_error: true
