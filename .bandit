@@ -1,0 +1,4 @@
+skips: ['B404', 'B603']
+# skip the B101 assert_used test against pytest files
+assert_used:
+  skips: ['./tests/*_test.py', './tests/test_*.py']

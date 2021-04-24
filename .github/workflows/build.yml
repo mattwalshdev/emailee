@@ -1,0 +1,101 @@
+---
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9"]
+
+    name: "Python ${{ matrix.python-version }}"
+    runs-on: "ubuntu-latest"
+    env:
+      EMAILEE_TEST_SMTP_SERVER: ${{ secrets.EMAILEE_TEST_SMTP_SERVER }}
+      EMAILEE_TEST_AUTH_USERNAME: ${{ secrets.EMAILEE_TEST_AUTH_USERNAME }}
+      EMAILEE_TEST_AUTH_PASSWORD: ${{ secrets.EMAILEE_TEST_AUTH_PASSWORD }}
+      EMAILEE_TEST_EMAILEE_PATH: ${{ secrets.EMAILEE_TEST_EMAILEE_PATH }}
+      EMAILEE_TEST_SENDER: ${{ secrets.EMAILEE_TEST_SENDER }}
+      EMAILEE_TEST_RECEIVER1: ${{ secrets.EMAILEE_TEST_RECEIVER1 }}
+      EMAILEE_TEST_RECEIVER2: ${{ secrets.EMAILEE_TEST_RECEIVER2 }}
+      EMAILEE_TEST_RECEIVER3: ${{ secrets.EMAILEE_TEST_RECEIVER3 }}
+
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "${{ matrix.python-version }}"
+
+      - name: "Install dependencies"
+        run: |
+          set -xe
+          python -VV
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install pipx
+          pipx install poetry
+          poetry install
+
+      - name: "Run tox for ${{ matrix.python-version }}"
+        run: "poetry run python -m tox"
+
+      - name: "Convert coverage"
+        run: "poetry run python -m coverage xml"
+
+      - name: "Upload coverage to Codecov"
+        uses: "codecov/codecov-action@v1"
+        with:
+          fail_ci_if_error: true
+
+
+  install-dev:
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+
+    name: "Verify dev environment installs on all systems"
+    runs-on: "${{ matrix.os }}"
+
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.8"
+      - name: "Install in dev mode"
+        run: |
+          set -xe
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install pipx
+          pipx install poetry
+          poetry install
+      - name: "Import package and get version"
+        run: "poetry run python -c 'import emailee; print(emailee.__version__)'"
+        with:
+          fail_ci_if_error: true
+
+
+  package:
+    name: "Build & verify package"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.8"
+
+      - name: "Update pip and install poetry"
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install pipx
+          pipx install poetry
+          poetry install --no-dev
+      - name: "Build package"
+        run: "poetry build"
+        with:
+          fail_ci_if_error: true
