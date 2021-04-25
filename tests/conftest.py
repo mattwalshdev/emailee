@@ -4,8 +4,6 @@ from pathlib import Path
 import pytest
 import toml
 
-test_config = toml.load("tests/.test.env.toml")
-
 # generate test environment settings from file if testing locally,
 #  otherwise they will be generated from secrets in a github action
 if Path("tests/.test.env.toml").is_file():
