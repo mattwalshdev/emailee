@@ -42,13 +42,14 @@ serverWorking: Dict[str, Any] = {
     "SSLTLS": "TLS",
     "authUsername": os.environ["EMAILEE_TEST_AUTH_USERNAME"],
     "authPassword": os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
-    "pingServer": True,
+    "pingServer": False,
 }
 
 serverWorkingBare: Dict[str, Any] = {
     "smtpServer": os.environ["EMAILEE_TEST_SMTP_SERVER"],
     "SSLTLS": "TLS",
     "authPassword": os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+    "pingServer": False,
 }
 
 serverBroken: Dict[str, Any] = {
@@ -654,7 +655,7 @@ def test_send_emails_threaded_working(file_setup):
         emailsWorking,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
-        waitTime=0.250,
+        waitTime=0.500,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -673,7 +674,7 @@ def test_send_emails_multiprocessing_working(file_setup):
         emailsWorking,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
-        waitTime=0.250,
+        waitTime=0.500,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -711,5 +712,5 @@ def test_send_emails_multiprocessing_large(file_setup):
         emailsWorkingLong,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
-        waitTime=0.250,
+        waitTime=0.500,
     )

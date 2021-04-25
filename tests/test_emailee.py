@@ -704,21 +704,29 @@ def test_attachments_full_path():
 def test_server_smtpserver_type(bad_data):
     email = emailee.Emailee()
     with pytest.raises(TypeError):
-        email.server(smtpServer=bad_data)
+        email.server(smtpServer=bad_data, pingServer=False)
 
 
 @pytest.mark.parametrize("bad_data", ["", "a", [], None, 1.5, {}])
 def test_server_port_type(bad_data):
     email = emailee.Emailee()
     with pytest.raises(TypeError):
-        email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], port=bad_data)
+        email.server(
+            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+            port=bad_data,
+            pingServer=False,
+        )
 
 
 @pytest.mark.parametrize("bad_data", [[], None, True, False, 0, 2, 1.5, {}])
 def test_server_ssltls_type(bad_data):
     email = emailee.Emailee()
     with pytest.raises(TypeError):
-        email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS=bad_data)
+        email.server(
+            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+            SSLTLS=bad_data,
+            pingServer=False,
+        )
 
 
 @pytest.mark.parametrize("bad_data", [[], None, True, False, 0, 2, 1.5, {}])
@@ -726,7 +734,9 @@ def test_server_authusername_type(bad_data):
     email = emailee.Emailee()
     with pytest.raises(TypeError):
         email.server(
-            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], authUsername=bad_data
+            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+            authUsername=bad_data,
+            pingServer=False,
         )
 
 
@@ -735,7 +745,9 @@ def test_server_authpassword_type(bad_data):
     email = emailee.Emailee()
     with pytest.raises(TypeError):
         email.server(
-            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], authPassword=bad_data
+            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+            authPassword=bad_data,
+            pingServer=False,
         )
 
 
@@ -752,26 +764,42 @@ def test_server_pingserver_type(bad_data):
 def test_server_port_invalid_values(bad_data):
     email = emailee.Emailee()
     with pytest.raises(ValueError):
-        email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], port=bad_data)
+        email.server(
+            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+            port=bad_data,
+            pingServer=False,
+        )
 
 
 @pytest.mark.parametrize("good_data", [0, 5, 65535])
 def test_server_port_valid_values(good_data):
     email = emailee.Emailee()
-    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], port=good_data)
+    email.server(
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        port=good_data,
+        pingServer=False,
+    )
 
 
 @pytest.mark.parametrize("bad_data", ["SSLS", "TLSS", "a"])
 def test_server_SSLTLS_invalid_values(bad_data):
     email = emailee.Emailee()
     with pytest.raises(ValueError):
-        email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS=bad_data)
+        email.server(
+            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+            SSLTLS=bad_data,
+            pingServer=False,
+        )
 
 
 @pytest.mark.parametrize("good_data", ["", "TLS", "SSL"])
 def test_server_SSLTLS_valid_values(good_data):
     email = emailee.Emailee()
-    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS=good_data)
+    email.server(
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        SSLTLS=good_data,
+        pingServer=False,
+    )
 
 
 def test_server_pingserver_invalid():
@@ -800,7 +828,9 @@ def test_server_timeout_type(bad_data):
     email = emailee.Emailee()
     with pytest.raises(TypeError):
         email.server(
-            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], timeout=bad_data
+            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+            timeout=bad_data,
+            pingServer=False,
         )
 
 
@@ -809,19 +839,25 @@ def test_server_timeout_invalid_values(bad_data):
     email = emailee.Emailee()
     with pytest.raises(ValueError):
         email.server(
-            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], timeout=bad_data
+            smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+            timeout=bad_data,
+            pingServer=False,
         )
 
 
 @pytest.mark.parametrize("good_data", [5, 60, 120])
 def test_server_timeout_valid_values(good_data):
     email = emailee.Emailee()
-    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], timeout=good_data)
+    email.server(
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        timeout=good_data,
+        pingServer=False,
+    )
 
 
 def test_server_scenario_1():
     email = emailee.Emailee()
-    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"])
+    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], pingServer=False)
     assert (
         email.__repr__()
         == f"{{'sender': '', 'replyTo': '', 'subject': '', 'msgText': '', 'msgHTML': '', 'to': [], 'cc': [], 'bcc': [], 'attachmentFiles': [], 'smtpServer': '{os.environ['EMAILEE_TEST_SMTP_SERVER']}', 'port': 25, 'SSLTLS': None}}"
@@ -830,7 +866,11 @@ def test_server_scenario_1():
 
 def test_server_scenario_2():
     email = emailee.Emailee()
-    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS="SSL")
+    email.server(
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        SSLTLS="SSL",
+        pingServer=False,
+    )
     assert (
         email.__repr__()
         == f"{{'sender': '', 'replyTo': '', 'subject': '', 'msgText': '', 'msgHTML': '', 'to': [], 'cc': [], 'bcc': [], 'attachmentFiles': [], 'smtpServer': '{os.environ['EMAILEE_TEST_SMTP_SERVER']}', 'port': 465, 'SSLTLS': <_EncType.SSL: 1>}}"
@@ -839,7 +879,11 @@ def test_server_scenario_2():
 
 def test_server_scenario_3():
     email = emailee.Emailee()
-    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS="TLS")
+    email.server(
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        SSLTLS="TLS",
+        pingServer=False,
+    )
     assert (
         email.__repr__()
         == f"{{'sender': '', 'replyTo': '', 'subject': '', 'msgText': '', 'msgHTML': '', 'to': [], 'cc': [], 'bcc': [], 'attachmentFiles': [], 'smtpServer': '{os.environ['EMAILEE_TEST_SMTP_SERVER']}', 'port': 587, 'SSLTLS': <_EncType.TLS: 2>}}"
@@ -848,7 +892,9 @@ def test_server_scenario_3():
 
 def test_server_scenario_4():
     email = emailee.Emailee()
-    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], port=465)
+    email.server(
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], port=465, pingServer=False
+    )
     assert (
         email.__repr__()
         == f"{{'sender': '', 'replyTo': '', 'subject': '', 'msgText': '', 'msgHTML': '', 'to': [], 'cc': [], 'bcc': [], 'attachmentFiles': [], 'smtpServer': '{os.environ['EMAILEE_TEST_SMTP_SERVER']}', 'port': 465, 'SSLTLS': <_EncType.SSL: 1>}}"
@@ -857,7 +903,9 @@ def test_server_scenario_4():
 
 def test_server_scenario_5():
     email = emailee.Emailee()
-    email.server(smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], port=587)
+    email.server(
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], port=587, pingServer=False
+    )
     assert (
         email.__repr__()
         == f"{{'sender': '', 'replyTo': '', 'subject': '', 'msgText': '', 'msgHTML': '', 'to': [], 'cc': [], 'bcc': [], 'attachmentFiles': [], 'smtpServer': '{os.environ['EMAILEE_TEST_SMTP_SERVER']}', 'port': 587, 'SSLTLS': <_EncType.TLS: 2>}}"
@@ -867,7 +915,9 @@ def test_server_scenario_5():
 def test_server_scenario_6():
     email = emailee.Emailee()
     email.server(
-        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], authUsername="fake.name"
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        authUsername="fake.name",
+        pingServer=False,
     )
     assert (
         email.__repr__()
@@ -881,6 +931,7 @@ def test_server_scenario_7():
         smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
         authUsername="fake.name",
         authPassword="fake.password",
+        pingServer=False,
     )
     assert (
         email.__repr__()
@@ -891,7 +942,9 @@ def test_server_scenario_7():
 def test_server_scenario_8():
     email = emailee.Emailee()
     email.server(
-        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], authPassword="fake.password"
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        authPassword="fake.password",
+        pingServer=False,
     )
     assert (
         email.__repr__()
@@ -903,7 +956,9 @@ def test_server_scenario_9():
     email = emailee.Emailee()
     email.sender("fake.sender@fakeemail.com")
     email.server(
-        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], authPassword="fake.password"
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        authPassword="fake.password",
+        pingServer=False,
     )
     assert (
         email.__repr__()
@@ -957,6 +1012,7 @@ def test_send_email_outputfile_invalid_type(bad_data):
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
         timeout=3,
+        pingServer=False,
     )
     with pytest.raises(TypeError):
         email.send(bad_data)
@@ -972,6 +1028,7 @@ def test_send_email_success_missing_username(file_setup):
         smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
         SSLTLS="TLS",
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        pingServer=False,
     )
     email.sender(os.environ["EMAILEE_TEST_SENDER"])
     pytest.SENT_EMAIL_NUM += 1
@@ -990,6 +1047,7 @@ def test_send_email_outputfile_doesnt_exist(file_setup):
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        pingServer=False,
     )
     pytest.SENT_EMAIL_NUM += 1
     email.send(os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt")
@@ -1008,6 +1066,7 @@ def test_send_email_outputfile_does_exist_empty(file_setup):
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        pingServer=False,
     )
     pytest.SENT_EMAIL_NUM += 1
     email.send(os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt")
@@ -1029,6 +1088,7 @@ def test_send_email_outputfile_does_exist_not_empty(file_setup):
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
         timeout=3,
+        pingServer=False,
     )
     with pytest.raises(OSError):
         email.send(os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt")
@@ -1045,6 +1105,7 @@ def test_send_email_outputfile_no_access():
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
         timeout=3,
+        pingServer=False,
     )
     with pytest.raises(PermissionError):
         email.send("/root/no_file_access.txt")
@@ -1109,7 +1170,10 @@ def test_send_email_invalid_auth_1():
         cc=["fake.receiver@fakeemail.com", "another.fake.receiver@fakeemail.com"]
     )
     email.server(
-        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS="TLS", timeout=3
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        SSLTLS="TLS",
+        timeout=3,
+        pingServer=False,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1121,7 +1185,10 @@ def test_send_email_invalid_auth_2():
     email.subject("Test email")
     email.sendTo(cc=["fake.receiver@fakeemail.com"])
     email.server(
-        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS="SSL", timeout=3
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
+        SSLTLS="SSL",
+        timeout=3,
+        pingServer=False,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1138,6 +1205,7 @@ def test_send_email_invalid_auth_3():
         authUsername="fake.name",
         authPassword="fake.password",
         timeout=3,
+        pingServer=False,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1154,6 +1222,7 @@ def test_send_email_invalid_auth_4():
         authUsername="fake.name",
         authPassword="fake.password",
         timeout=3,
+        pingServer=False,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1169,6 +1238,7 @@ def test_send_email_invalid_auth_5():
         SSLTLS="SSL",
         authPassword="fake.password",
         timeout=3,
+        pingServer=False,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1186,6 +1256,7 @@ def test_send_email_invalid_auth_6():
         SSLTLS="TLS",
         authPassword="fake.password",
         timeout=3,
+        pingServer=False,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1203,6 +1274,7 @@ def test_send_email_valid_auth_1():
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        pingServer=False,
     )
     pytest.SENT_EMAIL_NUM += 1
     email.send()
@@ -1238,6 +1310,7 @@ def test_send_email_valid_auth_2():
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        pingServer=False,
     )
     pytest.SENT_EMAIL_NUM += 1
     email.send()
