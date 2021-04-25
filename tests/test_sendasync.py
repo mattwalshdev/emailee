@@ -42,14 +42,14 @@ serverWorking: Dict[str, Any] = {
     "SSLTLS": "TLS",
     "authUsername": os.environ["EMAILEE_TEST_AUTH_USERNAME"],
     "authPassword": os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
-    "timeout": 60,
+    "timeout": 120,
 }
 
 serverWorkingBare: Dict[str, Any] = {
     "smtpServer": os.environ["EMAILEE_TEST_SMTP_SERVER"],
     "SSLTLS": "TLS",
     "authPassword": os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
-    "timeout": 60,
+    "timeout": 120,
 }
 
 serverBroken: Dict[str, Any] = {
@@ -546,6 +546,7 @@ def test_send_emails_threaded_working_one_email(file_setup):
         emailsWorkingSingle,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
+        waitTime=1,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -564,6 +565,7 @@ def test_send_emails_multiprocessing_working_one_email(file_setup):
         emailsWorkingSingle,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
+        waitTime=1,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -582,6 +584,7 @@ def test_send_emails_threaded_working_one_min_params(file_setup):
         emailsWorkingSingleBare,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
+        waitTime=1,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -600,6 +603,7 @@ def test_send_emails_multiprocessing_working_one_min_params(file_setup):
         emailsWorkingSingleBare,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
+        waitTime=1,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -618,6 +622,7 @@ def test_send_emails_threaded_working_one_min_params_server(file_setup):
         emailsWorkingSingleBare,
         serverWorkingBare,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
+        waitTime=1,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -636,6 +641,7 @@ def test_send_emails_multiprocessing_working_one_min_params_server(file_setup):
         emailsWorkingSingleBare,
         serverWorkingBare,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
+        waitTime=1,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
