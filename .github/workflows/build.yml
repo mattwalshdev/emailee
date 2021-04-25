@@ -35,7 +35,7 @@ jobs:
       - name: "Install dependencies"
         run: |
           set -xe
-          echo env.EMAILEE_TEST_SMTP_SERVER
+          echo {{ env.EMAILEE_TEST_SMTP_SERVER }}
           python -VV
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install pipx
