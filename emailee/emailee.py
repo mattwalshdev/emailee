@@ -1,10 +1,7 @@
 import enum
 import mimetypes
-import os
-import platform
 import re
 import smtplib
-import subprocess
 from email.mime.application import MIMEApplication
 from email.mime.audio import MIMEAudio
 from email.mime.image import MIMEImage
@@ -77,8 +74,8 @@ class Emailee:
         attachmentFiles(attachmentFiles: List[str]) - List of full and/or
             relative paths to files
         server(smtpServer: str, port: int, SSLTLS: str, authUsername: str,
-            authPassword: str, pingServer: bool, timeout: int) - servername (required),
-            port no, encryption type, credentials, ping test SMTP server before connecting,
+            authPassword: str, timeout: int) - servername (required),
+            port no, encryption type, credentials,
             timeout for server connection timeout in seconds, default 30 seconds,
             increase if on slow connection
         ready() - will return True if all required fields are entered and valid,
@@ -100,40 +97,6 @@ class Emailee:
     if my_email.ready():
         my_email.send()
     """
-
-    # access the OS ping function for the smtp server live check
-    _PING_USE: bool = True
-    _PING_PATH: str = ""
-    _PING_COUNT_PARAM: str = ""
-    _PING_TIMEOUT_PARAM: str = ""
-    _PING_TIMEOUT_VALUE: str = ""
-
-    if platform.system().lower() == "windows":
-        _sysPath: str = "%WINDIR%/System32/ping.exe"
-        _PING_PATH = os.path.expandvars(_sysPath)
-        _PING_COUNT_PARAM = "-n"
-        _PING_TIMEOUT_PARAM = "-w"
-        _PING_TIMEOUT_VALUE = "2000"
-        if not Path(_PING_PATH).is_file():
-            _PING_USE = False
-    else:
-        _pingLocations: List[str] = [
-            "/usr/bin",
-            "/usr/sbin",
-            "/bin",
-            "/sbin",
-            "/usr/local/bin",
-            "/usr/local/sbin",
-        ]
-        for pingLocation in _pingLocations:
-            if Path(pingLocation + "/ping").is_file():
-                _PING_PATH = pingLocation + "/ping"
-                _PING_COUNT_PARAM = "-c"
-                _PING_TIMEOUT_PARAM = "-W"
-                _PING_TIMEOUT_VALUE = "2"
-                break
-        if not _PING_PATH:
-            _PING_USE = False
 
     _EMAIL_REGEX = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
@@ -285,7 +248,6 @@ class Emailee:
         SSLTLS: str = "",
         authUsername: str = "",
         authPassword: str = "",
-        pingServer: bool = True,
         timeout: int = 30,
     ) -> None:
         if not isinstance(smtpServer, str):
@@ -303,9 +265,6 @@ class Emailee:
         if not isinstance(authPassword, str):
             raise TypeError("smtpServer auth password not in string format")
 
-        if not isinstance(pingServer, bool):
-            raise TypeError("smtpServer ping server option not in bool format")
-
         if not isinstance(timeout, int):
             raise TypeError("timeout server option not in integer format")
 
@@ -318,25 +277,7 @@ class Emailee:
         if timeout <= 0:
             raise ValueError("Server timeout period is an invalid number")
 
-        if pingServer and Emailee._PING_USE:
-            ping = subprocess.Popen(
-                [
-                    Emailee._PING_PATH,
-                    Emailee._PING_COUNT_PARAM,
-                    "1",
-                    Emailee._PING_TIMEOUT_PARAM,
-                    Emailee._PING_TIMEOUT_VALUE,
-                    smtpServer,
-                ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            if ping.wait() == 0:
-                self._smtpServer = smtpServer
-            else:
-                raise ValueError("Unable to ping SMTP server")
-        else:
-            self._smtpServer = smtpServer
+        self._smtpServer = smtpServer
 
         if port > 0:
             self._port = port

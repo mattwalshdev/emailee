@@ -40,7 +40,6 @@ class _SendAsync:
                 'SSLTLS': SSL or TLS encryption, optional
                 'authUsername': authenticated username, optional
                 'authPassword': authenticated password, optional
-                'pingServer': test server ping before connecting, optional
             }
         outputFile: str - empty or non-existant text file to write successful sent email metadata to.
             Similar to AsyncThreads/AsyncMP.emailReport(), but the outputFile is written to during the email
@@ -133,7 +132,6 @@ def _sendMailFunc(
     mailServer.setdefault("SSLTLS", None)
     mailServer.setdefault("authUsername", "")
     mailServer.setdefault("authPassword", "")
-    mailServer.setdefault("pingServer", True)
     mailServer.setdefault("timeout", 30)
 
     mail = Emailee()
@@ -157,7 +155,6 @@ def _sendMailFunc(
         SSLTLS=mailServer["SSLTLS"],
         authUsername=mailServer["authUsername"],
         authPassword=mailServer["authPassword"],
-        pingServer=mailServer["pingServer"],
         timeout=mailServer["timeout"],
     )
     try:
