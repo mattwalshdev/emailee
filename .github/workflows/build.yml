@@ -42,7 +42,7 @@ jobs:
 
       - name: "Run tests and coverage for ${{ matrix.python-version }}"
         run: |
-          poetry run python -m coverage run -m pytest tests
+          poetry run python -m coverage run -m pytest -vv tests
           poetry run python -m coverage xml
 
         if: ${{ matrix.python-version == 3.8 }}
