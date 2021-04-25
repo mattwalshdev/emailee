@@ -43,6 +43,7 @@ serverWorking: Dict[str, Any] = {
     "authUsername": os.environ["EMAILEE_TEST_AUTH_USERNAME"],
     "authPassword": os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
     "pingServer": False,
+    "timeout": 60,
 }
 
 serverWorkingBare: Dict[str, Any] = {
@@ -50,6 +51,7 @@ serverWorkingBare: Dict[str, Any] = {
     "SSLTLS": "TLS",
     "authPassword": os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
     "pingServer": False,
+    "timeout": 60,
 }
 
 serverBroken: Dict[str, Any] = {
