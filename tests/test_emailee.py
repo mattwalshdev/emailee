@@ -956,7 +956,7 @@ def test_send_email_outputfile_invalid_type(bad_data):
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
-        timeout=1,
+        timeout=3,
     )
     with pytest.raises(TypeError):
         email.send(bad_data)
@@ -1028,7 +1028,7 @@ def test_send_email_outputfile_does_exist_not_empty(file_setup):
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
-        timeout=1,
+        timeout=3,
     )
     with pytest.raises(OSError):
         email.send(os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt")
@@ -1044,7 +1044,7 @@ def test_send_email_outputfile_no_access():
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
-        timeout=1,
+        timeout=3,
     )
     with pytest.raises(PermissionError):
         email.send("/root/no_file_access.txt")
@@ -1055,7 +1055,7 @@ def test_send_email_invalid_server_1():
     email.sender("fake.sender@fakeemail.com")
     email.subject("Test email")
     email.sendTo(["fake.receiver@fakeemail.com"])
-    email.server(smtpServer="asdadas.fakeemail.com", pingServer=False, timeout=1)
+    email.server(smtpServer="asdadas.fakeemail.com", pingServer=False, timeout=3)
     with pytest.raises(ValueError):
         email.send()
 
@@ -1066,7 +1066,7 @@ def test_send_email_invalid_server_2():
     email.subject("Test email")
     email.sendTo(["fake.receiver@fakeemail.com", "another.fake.receiver@fakeemail.com"])
     email.server(
-        smtpServer="asdadas.fakeemail.com", SSLTLS="SSL", pingServer=False, timeout=1
+        smtpServer="asdadas.fakeemail.com", SSLTLS="SSL", pingServer=False, timeout=3
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1080,7 +1080,7 @@ def test_send_email_invalid_server_3():
         ["fake.receiver@fakeemail.com"], cc=["another.fake.receiver@fakeemail.com"]
     )
     email.server(
-        smtpServer="asdadas.fakeemail.com", SSLTLS="TLS", pingServer=False, timeout=1
+        smtpServer="asdadas.fakeemail.com", SSLTLS="TLS", pingServer=False, timeout=3
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1095,7 +1095,7 @@ def test_send_email_invalid_server_4():
         cc=["fake.receiver@fakeemail.com", "another.fake.receiver@fakeemail.com"],
     )
     email.server(
-        smtpServer="asdadas.fakeemail.com", port=65, pingServer=False, timeout=1
+        smtpServer="asdadas.fakeemail.com", port=65, pingServer=False, timeout=3
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1109,7 +1109,7 @@ def test_send_email_invalid_auth_1():
         cc=["fake.receiver@fakeemail.com", "another.fake.receiver@fakeemail.com"]
     )
     email.server(
-        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS="TLS", timeout=1
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS="TLS", timeout=3
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1121,7 +1121,7 @@ def test_send_email_invalid_auth_2():
     email.subject("Test email")
     email.sendTo(cc=["fake.receiver@fakeemail.com"])
     email.server(
-        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS="SSL", timeout=1
+        smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"], SSLTLS="SSL", timeout=3
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1137,7 +1137,7 @@ def test_send_email_invalid_auth_3():
         SSLTLS="TLS",
         authUsername="fake.name",
         authPassword="fake.password",
-        timeout=1,
+        timeout=3,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1153,7 +1153,7 @@ def test_send_email_invalid_auth_4():
         SSLTLS="SSL",
         authUsername="fake.name",
         authPassword="fake.password",
-        timeout=1,
+        timeout=3,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1168,7 +1168,7 @@ def test_send_email_invalid_auth_5():
         smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
         SSLTLS="SSL",
         authPassword="fake.password",
-        timeout=1,
+        timeout=3,
     )
     with pytest.raises(ValueError):
         email.send()
@@ -1185,7 +1185,7 @@ def test_send_email_invalid_auth_6():
         smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
         SSLTLS="TLS",
         authPassword="fake.password",
-        timeout=1,
+        timeout=3,
     )
     with pytest.raises(ValueError):
         email.send()

@@ -58,7 +58,7 @@ serverBroken: Dict[str, Any] = {
     "authUsername": "fake.name",
     "authPassword": "fake.password",
     "pingServer": False,
-    "timeout": 1,
+    "timeout": 3,
 }
 
 emailsWorkingSingle: List[Dict[str, Any]] = [
