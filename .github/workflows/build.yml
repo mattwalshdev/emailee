@@ -35,7 +35,7 @@ jobs:
       - name: "Install dependencies"
         run: |
           set -xe
-          pwd
+          echo env.EMAILEE_TEST_SMTP_SERVER
           python -VV
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install pipx
@@ -47,8 +47,9 @@ jobs:
           poetry run python -m coverage run -m pytest tests
           poetry run python -m coverage xml
 
-        if: ${{ matrix.python-version }} == "3.8"
+        if: ${{ matrix.python-version == "3.8" }}
       - name: "Upload coverage to Codecov"
+        if: ${{ matrix.python-version == "3.8" }}
         uses: "codecov/codecov-action@v1"
         with:
           fail_ci_if_error: true
