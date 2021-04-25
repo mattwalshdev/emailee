@@ -35,15 +35,19 @@ jobs:
       - name: "Install dependencies"
         run: |
           set -xe
+          pwd
           python -VV
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install pipx
           pipx install poetry
           poetry install
 
-      - name: "Run tox for ${{ matrix.python-version }}"
-        run: "poetry run python -m tox"
+      - name: "Run tests and coverage for ${{ matrix.python-version }}"
+        run: |
+          poetry run python -m coverage run -m pytest tests
+          poetry run python -m coverage xml
 
+        if: ${{ matrix.python-version }} == "3.8"
       - name: "Upload coverage to Codecov"
         uses: "codecov/codecov-action@v1"
         with:
