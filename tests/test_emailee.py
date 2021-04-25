@@ -961,6 +961,7 @@ def test_send_email_success_missing_username(file_setup):
         smtpServer=os.environ["EMAILEE_TEST_SMTP_SERVER"],
         SSLTLS="TLS",
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        timeout=60,
     )
     email.sender(os.environ["EMAILEE_TEST_SENDER"])
     pytest.SENT_EMAIL_NUM += 1
@@ -979,6 +980,7 @@ def test_send_email_outputfile_doesnt_exist(file_setup):
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        timeout=60,
     )
     pytest.SENT_EMAIL_NUM += 1
     email.send(os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt")
@@ -997,6 +999,7 @@ def test_send_email_outputfile_does_exist_empty(file_setup):
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        timeout=60,
     )
     pytest.SENT_EMAIL_NUM += 1
     email.send(os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt")
@@ -1190,6 +1193,7 @@ def test_send_email_valid_auth_1():
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        timeout=60,
     )
     pytest.SENT_EMAIL_NUM += 1
     email.send()
@@ -1225,6 +1229,7 @@ def test_send_email_valid_auth_2():
         SSLTLS="TLS",
         authUsername=os.environ["EMAILEE_TEST_AUTH_USERNAME"],
         authPassword=os.environ["EMAILEE_TEST_AUTH_PASSWORD"],
+        timeout=60,
     )
     pytest.SENT_EMAIL_NUM += 1
     email.send()

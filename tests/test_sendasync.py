@@ -654,7 +654,7 @@ def test_send_emails_threaded_working(file_setup):
         emailsWorking,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
-        waitTime=0.500,
+        waitTime=1,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -673,7 +673,7 @@ def test_send_emails_multiprocessing_working(file_setup):
         emailsWorking,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
-        waitTime=0.500,
+        waitTime=1,
     )
     emailReportSorted = sorted(email.emailReport, key=lambda i: i["subject"])
     emailExpectedSorted = sorted(
@@ -711,5 +711,5 @@ def test_send_emails_multiprocessing_large(file_setup):
         emailsWorkingLong,
         serverWorking,
         outputFile=os.environ["EMAILEE_TEST_EMAILEE_PATH"] + "/tests/test_output.txt",
-        waitTime=0.500,
+        waitTime=1,
     )
