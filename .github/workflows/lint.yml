@@ -26,5 +26,5 @@ jobs:
 
       - name: "Run pre-commit tests"
         run: |
-          poetry run python -m pre-commit install
-          poetry run python -m pre-commit run --all-files
+          poetry run pre-commit install
+          poetry run pre-commit run --all-files
