@@ -36,7 +36,7 @@ class _SendAsync:
         serverDict -
             {
                 'smtpServer': SMTP server,
-                'port': port number, optional, default 25
+                'port': port number, optional
                 'SSLTLS': SSL or TLS encryption, optional
                 'authUsername': authenticated username, optional
                 'authPassword': authenticated password, optional
@@ -244,7 +244,7 @@ class AsyncThreads(_SendAsync):
     emails = [{...}]
     server = {...}
 
-    emails = emailee.AsyncThreads(emails, server, waitTime = 0.250)
+    emails = emailee.AsyncThreads(emails, server, outputFile='output.txt', waitTime=0.250)
     print(emails.emailReport)
     """
 
@@ -323,7 +323,7 @@ class AsyncMP(_SendAsync):
     emails = [{...}]
     server = {...}
 
-    emails = emailee.AsyncMP(emails, server, waitTime = 0.250)
+    emails = emailee.AsyncMP(emails, server, outputFile='output.txt', waitTime=0.250)
     print(emails.emailReport)
     """
 
