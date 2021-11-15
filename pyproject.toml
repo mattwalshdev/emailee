@@ -18,7 +18,7 @@ classifiers=[
 python = "^3.6.1"
 
 [tool.poetry.dev-dependencies]
-bandit = "^1.7.0"
+bandit = "^1.7.1"
 pytest-cov = "^2.11.1"
 pre-commit = "^2.12.1"
 flake8 = "^3.9.1"
